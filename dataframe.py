@@ -15,7 +15,7 @@ df = create_dataframe(file_name)
 
 # ======================================================================= #
 
-def total_gets_per_tour(tour):
+def total_guests_per_tour(tour):
     tour_df = df[(df['Activity'] == tour)]
     tour_df_Pax_column = tour_df.loc[0:, 'Pax']
     
@@ -24,10 +24,26 @@ def total_gets_per_tour(tour):
     
     return (tour_df, tour_df.Pax.sum())
     
-(tour_df, tour_total_guests) = total_gets_per_tour('City Tour 1')
+(tour_df, tour_total_guests) = total_guests_per_tour('City Tour 1')
 
 
 # ======================================================================= #
+
+bus_capacities = {
+     '2' : 27, 
+     '4' : 23,
+     '5' : 23,
+     '6' : 23,
+     '7' : 24,
+     '8' : 27,
+     '9' : 23,
+     '10' : 14,
+     '11' : 23,
+     '12' : 23,
+     'Van' : 8}
+
+# ======================================================================= #
+
 
 def pickup_passengers(tour_df):
     
@@ -41,44 +57,63 @@ def pickup_passengers(tour_df):
     
 tour_df_pickup =  pickup_passengers(tour_df)
 
+
 # ======================================================================= #
 
 def split_pickup_buses():
    
     pickup_buses = ['10', '2', '8', 'Van']
-    bus_capacities = {
-         '2' : 27, 
-         '4' : 23,
-         '5' : 23,
-         '6' : 23,
-         '7' : 24,
-         '8' : 27,
-         '9' : 23,
-         '10' : 14,
-         '11' : 23,
-         '12' : 23,
-         'Van' : 8}
+
+    capacity = bus_capacities[pickup_buses[bus]]
+    
     bus_assignments = []
     
-    assigned_passengers = 0
-    for index, row in tour_df_pickup.iterrows():
-        
-        for bus in pickup_buses:
-
-            single_bus = []
-            capacity = bus_capacities[bus]
-            
-            if assigned_passengers <= capacity:
-                single_bus.append(( tour_df_pickup['Guest Name'][row], tour_df_pickup['Mobile Telephone'][row], tour_df_pickup['Pickup Location'][row] ))
-                assigned_passengers +=  tour_df_pickup['Pax'][row]
-            else:
-                bus_assignments.append(( bus, single_bus ))
+    total = 0
     
-        return bus_assignments
+    for bus in range(len(pickup_buses)):
+        print('TOTAL: ', total, 'BUS: ', bus, bus_capacities[pickup_buses[bus]])
+        single_bus = tour_df_pickup['Guest Name'][ tour_df_pickup['Guest Name'] >= total & tour_df_pickup['Guest Name'] <= (total + capacity) ]
+        bus_assignments.append(single_bus)
+        total += bus_capacities[pickup_buses[bus]]
+    
+    
+
+#    assigned_passengers = 0
+#    bus = 0 
+#    capacity = bus_capacities[pickup_buses[bus]]
+#    single_bus = []
+#    for index, row in tour_df_pickup.iterrows():
+#        print('ROW', index)
+#        print('CAPACITY', capacity)
+#        
+#        if tour_df_pickup['Pax'][index] <= capacity:
+#            
+#            single_bus.append(( tour_df_pickup['Guest Name'][index], tour_df_pickup['Mobile Telephone'][index], tour_df_pickup['Pickup Location'][index] ))
+#            assigned_passengers +=  tour_df_pickup['Pax'][index]
+#            print('SINGLE BUS: ', bus, single_bus)
+#            print('ASSIGNED PASSENGERS', assigned_passengers)
+#            bus += 1
+#            
+#        else:
+#            bus_assignments.append(( single_bus)) 
+#            single_bus = []
+#            bus += 1
+#            print('END')
+#            assigned_passengers = 0
+#            
+#        
+#        return bus_assignments
 
 
 split_pickup_buses()
 
+
+total = 0
+listChunks = []
+for j in range(len(second_list)):
+    chunk_mylist = mylist[total:total+second_list[j]]
+    listChunks.append(chunk_mylist)
+    total += second_list[j]
 
 
 
