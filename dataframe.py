@@ -60,6 +60,34 @@ tour_df_pickup =  pickup_passengers(tour_df)
 
 # ======================================================================= #
 
+def pickup_location_groups(tour_df_pickup):
+    guest_max = sum(tour_df_pickup.Pax)
+    guests_location = tour_df_pickup['Pickup Location'].tolist()
+    possible_locations = ['Beverly Hills', 'Century City', 'Hollywood', 'LAX', 'Marina Del Rey', 'Malibu', 'Venice', 'Santa Monica', 'West Hollywood', 'Westwood']
+    
+    pickup_route = dict.fromkeys(possible_locations, [])
+    
+    for guest in tour_df_pickup['Pickup Location']:
+        [pickup_route[loc].append(guest) for loc in possible_locations if loc in guest]
+        
+        
+        
+     matches = tour_df_pickup['Pickup Location'].isin(possible_locations)      
+     tour_df_pickup.loc[matches, 'column_2'] = tour_df_pickup.loc[matches, 'Pickup Location']
+     
+     
+    
+
+    
+    
+    
+
+
+
+pickup_location_groups(tour_df_pickup)
+
+# ======================================================================= #
+
 def split_pickup_buses():
    
     pickup_buses = ['10', '2', '8', 'Van']
@@ -69,10 +97,12 @@ def split_pickup_buses():
     bus_assignments = []
     
     total = 0
+    guest = 0
+    guest_max = sum(tour_df_pickup.Pax)
     
     for bus in range(len(pickup_buses)):
         print('TOTAL: ', total, 'BUS: ', bus, bus_capacities[pickup_buses[bus]])
-        single_bus = tour_df_pickup['Guest Name'][ tour_df_pickup['Guest Name'] >= total & tour_df_pickup['Guest Name'] <= (total + capacity) ]
+        single_bus = tour_df_pickup['Guest Name'][guest] >= total & tour_df_pickup['Guest Name'] <= (total + capacity) ]
         bus_assignments.append(single_bus)
         total += bus_capacities[pickup_buses[bus]]
     
@@ -126,4 +156,28 @@ for j in range(len(second_list)):
 # 
 # remove_string4 = 'add/edit notes'
 # df['Comments'] = df['Comments'].str.replace(remove_string4, '') 
+#==============================================================================
+
+
+    """Pandas series objects include an 'isin' method that could let you 
+    identify rows whose column_1 values are in my_list and saves the results 
+    off in a boolean-valued series. This can in turn be used with the .loc 
+    indexing method to copy the values from the appropriate rows from 
+    column 1 to column 2"""
+    # Identify the matching rows
+#    matches = df['column_1'].isin(my_list)
+    # Set the column_2 entries to column_1 in the matching rows
+#    df.loc[matches,'column_2'] = df.loc[matches,'column_1'] 
+
+#==============================================================================
+# [ expression for item in list if conditional ]
+# 
+# for item in list:
+#     if conditional:
+#         expression
+# 
+# for loc in possible_locations:
+#     if loc in guest:
+#         pickup_route[loc].append(guest)
+#         
 #==============================================================================
