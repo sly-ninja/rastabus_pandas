@@ -1,36 +1,19 @@
-import platform
-from bs4 import BeautifulSoup
-from selenium import webdriver
+from scraping_class import Scraping
 
-# PhantomJS files have different extensions
-# under different operating systems
-if platform.system() == 'Windows':
-    PHANTOMJS_PATH = './phantomjs.exe'
-else:
-    PHANTOMJS_PATH = './phantomjs'
+def get_address_list():
+    
+    url = 'https://adayinlatours.zaui.net/modules/webBooking/index.php?action=Details&id=1'
+    
+    obj = Scraping(url)
+    soup, browser = obj.read_url()
+    
+    addresses = [str(x.text) for x in soup.find(id='pickupId').find_all('option')]
+    keywordFilter = ['*', '1400 Ocean Ave']
+    addresses =  [sent for sent in addresses if not any(word in sent for word in keywordFilter)]
+    del addresses[0]
+    
+    browser.quit()
+    
+    return addresses
 
-
-# here we'll use pseudo browser PhantomJS,
-# but browser can be replaced with browser = webdriver.FireFox(),
-# which is good for debugging.
-browser = webdriver.PhantomJS(PHANTOMJS_PATH)
-
-url = 'https://adayinlatours.zaui.net/modules/webBooking/index.php?action=Details&id=1'
-
-browser.get(url)
-
-
-soup = BeautifulSoup(browser.page_source, "html.parser")
-
-
-addresses = [str(x.text) for x in soup.find(id="pickupId").find_all('option')]
-
-
-addresses.split(',')
-
-#print(addresses)
-
-
-
-browser.quit()
-
+address_list = get_address_list()

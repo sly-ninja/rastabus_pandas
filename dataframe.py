@@ -181,3 +181,22 @@ for j in range(len(second_list)):
 #         pickup_route[loc].append(guest)
 #         
 #==============================================================================
+
+
+#==============================================================================
+# 
+# mList = [int(e) if e.isdigit() else e for e in mStr.split(',')]
+# 
+# In [98]: pat = r'\b(?:{})\b'.format('|'.join(remove_words))
+# 
+# In [99]: pat
+# Out[99]: '\\b(?:abc|def|pls)\\b'
+# 
+# In [100]: df['new'] = df['string'].str.replace(pat, '')
+# 
+# 
+# # Identify the matching rows
+# matches = df['column_1'].isin(my_list)
+# # Set the column_2 entries to column_1 in the matching rows
+# df.loc[matches,'column_2'] = df.loc[matches,'column_1']
+#==============================================================================
