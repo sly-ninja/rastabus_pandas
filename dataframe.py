@@ -63,17 +63,27 @@ def split_pickup_buses():
     assigned_passengers = 0
     for index, row in tour_df_pickup.iterrows():
         
+        
+        
+       
         for bus in pickup_buses:
 
             single_bus = []
             capacity = bus_capacities[bus]
+#            print(bus, 'assigned_passengers1', assigned_passengers, 'END')
             
             if assigned_passengers <= capacity:
-                single_bus.append(( tour_df_pickup['Guest Name'][row], tour_df_pickup['Mobile Telephone'][row], tour_df_pickup['Pickup Location'][row] ))
-                assigned_passengers +=  tour_df_pickup['Pax'][row]
+                
+                single_bus.append(( tour_df_pickup['Guest Name'][index], tour_df_pickup['Mobile Telephone'][index], tour_df_pickup['Pickup Location'][index] ))
+                
+                assigned_passengers +=  tour_df_pickup['Pax'][index]
+                
+                print('SINGLE BUS: ', single_bus, index)
+                
             else:
                 bus_assignments.append(( bus, single_bus ))
-    
+                
+                
         return bus_assignments
 
 
