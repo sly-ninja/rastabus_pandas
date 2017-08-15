@@ -14,3 +14,20 @@ bus_capacities = {
 guest_max = sum(tour_df_pickup.Pax)
 
 pickup_buses = ['10', '2', '8', 'Van']
+
+
+
+
+
+
+
+
+cities = ['Beverly Hills', 'Century City', 'Hollywood', 'LAX', 'Marina Del Rey', 'North Hollywood', 'Santa Monica', 'Venice', 'West Hollywood', 'Westwood']
+
+
+
+def count_per_location():
+    tour_df_pickup
+    
+    tour_df_pickup['Location Groups']
+    counts_list

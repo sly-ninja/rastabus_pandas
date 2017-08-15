@@ -7,6 +7,10 @@ cities = ['Beverly Hills', 'Century City', 'Hollywood', 'LAX', 'Marina Del Rey',
 
 
 def create_dataframe(file_name):
+    """
+    takes in tour information file downloaded, a string
+    returns pandas dataframe 
+    """
     df = pd.read_html(file_name)
     df = df[6]
     df = df.drop(['Conf.', 'Comments', 'Balance Owing', 'Drivers/Veh/Cap', 'Pickup Address'], axis=1)
@@ -16,6 +20,11 @@ df = create_dataframe(file_name)
 
 
 def total_guests_per_tour(tour_name):
+    """'
+    takes in name of specific tour, a string
+    returns number of guests for that specific tour, an integer
+    and its respective pandas dataframe
+    """
     tour_df = df[(df['Activity'] == tour_name)]
     tour_df_Pax_column = tour_df.loc[0:, 'Pax']
     
@@ -42,13 +51,17 @@ tour_df_pickup =  pickup_passengers(tour_df)
 def add_location_groups(tour_df_pickup):
 
     tour_df_pickup['Location Groups'] = np.empty((len(tour_df_pickup), 0)).tolist()
+    location_groups_count = dict.fromkeys(cities, 0)
     
     for city in cities:
-        for i in range(len(tour_df_pickup[['Pickup Location']])):
+        for i in range(len(tour_df_pickup)):
             if tour_df_pickup[['Pickup Location']].loc[i].str.contains(city).bool():
-                tour_df_pickup['Location Groups'][i] = city
+                tour_df_pickup.loc[:, 'Location Groups'][i] = city
+                location_groups_count[city] += tour_df_pickup.loc[:, ('Pax')][i]
+    
+    return location_groups_count
 
-    return tour_df_pickup
 
-add_location_groups(tour_df_pickup)
-
+counts_list = add_location_groups(tour_df_pickup)
+print(counts_list)
+print(tour_df_pickup)
