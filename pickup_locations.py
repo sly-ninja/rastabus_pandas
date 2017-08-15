@@ -37,33 +37,25 @@ location_groups = group_pickup_locations(addresses)
 print(location_groups)
 
 
-cities = ['Beverly Hills', 'Westwood']
-location_groups = dict.fromkeys(cities, [])
-for city in cities:
-    print('CITY: ', city)
-    for address in addresses:
-        print('ADDRESS: ', address)
-        if city in address:
-            print('HERE', city)
-            location_groups[city].append(address)
-        else:
-            print('FALSE')
             
             
 cities = ['Beverly Hills', 'Westwood']
 location_groups = dict.fromkeys(cities, [])       
-for address in addresses:
-    print('ADDRESS: ', address)
-    for city in cities:
-        print('CITY: ', city)
+for city in cities:
+    for address in addresses:
+#        print('ADDRESS: ', address)
         if city in address:
-            print('HERE', city)
+#            print(city, address)
             location_groups[city].append(address)
-            print('END')
-        else:
-            print('NOPE')
+#    [location_groups[city].append(address) for address in addresses if city in address ]
+
+
 
 
 
 #    if any(city in address for city in cities):
 
+ 
+ 
+ 
+  
