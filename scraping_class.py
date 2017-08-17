@@ -6,6 +6,7 @@ class Scraping:
      
     def __init__(self, url):
         self.url = url
+        self.soup, self.browser = self.read_url()
 
     def read_url(self):
         
