@@ -4,32 +4,25 @@ import numpy as np
 class Rasta_Dataframe(object):
     
     def __init__(self):
-        self.df = self.create_dataframe(file_name)
-        self.df_clean = self.clean_dataframe(drop_columns)
+        self.df = self.create_dataframe(file_name, drop_columns)
         self.tour_df, self.tour_count = self.total_guests_per_tour(tour_name)
         self.tour_df_pickup = self.pickup_passengers()
         self.location_groups_count = self.add_location_groups(cities)
  
     
-    def create_dataframe(self, file_name):
+    def create_dataframe(self, file_name, drop_columns=None):
         """
         takes in tour information file downloaded, a string
+        removes unwanted columns
         returns pandas dataframe 
         """
         self.df = pd.read_html(file_name)
         self.df = self.df[6]
-        
+        if drop_columns:
+            self.df = self.df.drop(drop_columns, axis=1)
+            
         return self.df
-    
-    
-    def clean_dataframe(self, drop_columns):
-        try :
-            if self.drop_columns:
-                self.df_clean = self.df.drop(drop_columns, axis=1)
-                return self.df_clean
-        except:
-            return self.df
-    
+
     
     def total_guests_per_tour(self, tour_name):
         """
@@ -39,11 +32,11 @@ class Rasta_Dataframe(object):
         """
         self.tour_df = self.df[(self.df['Activity'] == tour_name)]
         tour_df_Pax_column = self.tour_df.loc[0:, 'Pax']
-        self.tour_count = self.tour_df.Pax.sum()
         
         for row in range(len(self.tour_df)):
             tour_df_Pax_column[row] = sum([ int(x) for x in tour_df_Pax_column[row] if x.isdigit() ])
-        
+            
+        self.tour_count = self.tour_df.Pax.sum()
         return (self.tour_df, self.tour_count)
         
     
@@ -74,16 +67,9 @@ class Rasta_Dataframe(object):
     
     
 
-#=============================================================================#
-
 file_name = '2017-07-26-35057.xls'
 cities = ['Beverly Hills', 'Century City', 'Hollywood', 'LAX', 'Marina Del Rey', 'North Hollywood', 'Santa Monica', 'Venice', 'West Hollywood', 'Westwood']
 drop_columns = ['Conf.', 'Comments', 'Balance Owing', 'Drivers/Veh/Cap', 'Pickup Address']
 tour_name = 'City Tour 1'
 
-#rasta_df = Rasta_Dataframe()
 
-#print(rasta_df.create_dataframe(file_name))
-#rasta_df.total_guests_per_tour('City Tour 1')
-#rasta_df.pickup_passengers()
-#rasta_df.add_location_groups()

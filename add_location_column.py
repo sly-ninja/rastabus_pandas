@@ -14,6 +14,7 @@ def create_dataframe(file_name):
     df = pd.read_html(file_name)
     df = df[6]
     df = df.drop(['Conf.', 'Comments', 'Balance Owing', 'Drivers/Veh/Cap', 'Pickup Address'], axis=1)
+    
     return df
 
 df = create_dataframe(file_name)

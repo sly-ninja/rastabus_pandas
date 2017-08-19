@@ -16,7 +16,7 @@ df = create_dataframe(file_name)
 # ======================================================================= #
 
 def total_guests_per_tour(tour_name):
-    tour_df = df[(df['Activity'] == tour)]
+    tour_df = df[(df['Activity'] == tour_name)]
     tour_df_Pax_column = tour_df.loc[0:, 'Pax']
     
     for row in range(len(tour_df)):
