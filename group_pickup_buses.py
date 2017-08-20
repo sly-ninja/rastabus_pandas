@@ -54,7 +54,6 @@ def assign_buses(bus_capacities, pickup_buses):
                 bus_assignments[pickup_buses[j]].append(tour_df_pickup.loc[:, 'Guest Name'][i])
                 assigned_to_bus += tour_df_pickup.loc[:, 'Pax'][i]
                 print("assigned_to_bus:", assigned_to_bus)
-                j += 1
                 
                 
             else:              
