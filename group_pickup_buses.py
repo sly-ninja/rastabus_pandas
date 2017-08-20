@@ -29,28 +29,38 @@ bus_capacities = {
      '12' : 23,
      'Van' : 8}
 
-
-
 pickup_buses = ['10', '2', '8', 'Van']
 
-def assign_buses():
+
+def assign_buses(bus_capacities, pickup_buses):
 #    guest_total = sum(tour_df_pickup.Pax)
     assigned_to_bus = 0
     bus_assignments = dict.fromkeys(pickup_buses, [])
+    total_bus_count = len(pickup_buses)
+    total_groups = len(tour_df_pickup)
     
-    for i in range(len(pickup_buses)):
-        print('IIII: ', i)
-        print(bus_capacities[pickup_buses[i]])
-        while assigned_to_bus < bus_capacities[pickup_buses[i]]:
+    for i in range(total_groups):
+        print('first stop:', i)
+        
+        for j in range(total_bus_count):
+            print('second stop:', j)
             
-            for j in range(len(tour_df_pickup)):
-                print('JJJJ: ', j)
-                bus_assignments[pickup_buses[i]].append(tour_df_pickup.loc[:, 'Guest Name'][j])
-                assigned_to_bus += tour_df_pickup.loc[:, 'Pax'][j]
+            bus_capacity = bus_capacities[pickup_buses[j]]
+            print('bus capacity:', bus_capacity)
+            
+            
+            if tour_df_pickup.loc[:, 'Pax'][i] + assigned_to_bus < bus_capacity:
+                print('third stop')
+                bus_assignments[pickup_buses[j]].append(tour_df_pickup.loc[:, 'Guest Name'][i])
+                assigned_to_bus += tour_df_pickup.loc[:, 'Pax'][i]
                 print("assigned_to_bus:", assigned_to_bus)
                 j += 1
-        else:
-#            assigned_to_bus = 0
-            i += 1
+                
+                
+            else:              
+                i += 1
+                j += 1
+                assigned_to_bus = 0
+                print('end stop')
     
     return bus_assignments
