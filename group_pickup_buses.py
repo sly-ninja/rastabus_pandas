@@ -33,7 +33,7 @@ def assign_buses(bus_capacities, pickup_buses):
 
     number_in_bus = 0
     current_bus = 0
-    bus_assignments = dict.fromkeys(pickup_buses, [])
+    bus_assignments = {key:[] for key in pickup_buses}
     
     total_bus_count = len(pickup_buses)
     total_groups = len(tour_df_pickup)
@@ -41,17 +41,9 @@ def assign_buses(bus_capacities, pickup_buses):
     
     for i in range(total_groups):
         
-            print("bus number:", current_bus, i)
             if tour_df_pickup.loc[:, 'Pax'][i] + number_in_bus <= bus_capacity:
-                print('GUEST:', tour_df_pickup.loc[:, 'Guest Name'][i], '\n')
-                print('CURRENT BUS:', pickup_buses[current_bus], '\n')
-                print('KEY:', bus_assignments[pickup_buses[current_bus]], '\n')
-                
                 bus_assignments[pickup_buses[current_bus]].append(tour_df_pickup.loc[:, 'Guest Name'][i])
                 number_in_bus += tour_df_pickup.loc[:, 'Pax'][i]
-                print("number in bus:", number_in_bus)
-                print(bus_assignments)
-#                i += 1   
 
             else:
                 if current_bus < total_bus_count:
