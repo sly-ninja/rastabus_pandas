@@ -1,6 +1,5 @@
 from dataframe_class import Rasta_Dataframe
 
-
 rasta_df = Rasta_Dataframe()
 
 file_name = '2017-07-26-35057.xls'
@@ -11,10 +10,8 @@ tour_name = 'City Tour 1'
 
 df = rasta_df.create_dataframe(file_name, drop_columns)
 tour_df, tour_count = rasta_df.total_guests_per_tour('City Tour 1')
-#clean_df = rasta_df.clean_dataframe(drop_columns)
 tour_df_pickup = rasta_df.pickup_passengers()
 counts_list = rasta_df.add_location_groups(cities)
-
 
 bus_capacities = {
      '2' : 27, 
@@ -33,33 +30,39 @@ pickup_buses = ['10', '2', '8', 'Van']
 
 
 def assign_buses(bus_capacities, pickup_buses):
-#    guest_total = sum(tour_df_pickup.Pax)
-    assigned_to_bus = 0
+
+    number_in_bus = 0
+    current_bus = 0
     bus_assignments = dict.fromkeys(pickup_buses, [])
+    
     total_bus_count = len(pickup_buses)
     total_groups = len(tour_df_pickup)
+    bus_capacity = bus_capacities[pickup_buses[current_bus]]
     
     for i in range(total_groups):
-        print('first stop:', i)
         
-        for j in range(total_bus_count):
-            print('second stop:', j)
-            
-            bus_capacity = bus_capacities[pickup_buses[j]]
-            print('bus capacity:', bus_capacity)
-            
-            
-            if tour_df_pickup.loc[:, 'Pax'][i] + assigned_to_bus < bus_capacity:
-                print('third stop')
-                bus_assignments[pickup_buses[j]].append(tour_df_pickup.loc[:, 'Guest Name'][i])
-                assigned_to_bus += tour_df_pickup.loc[:, 'Pax'][i]
-                print("assigned_to_bus:", assigned_to_bus)
+            print("bus number:", current_bus, i)
+            if tour_df_pickup.loc[:, 'Pax'][i] + number_in_bus <= bus_capacity:
+                print('GUEST:', tour_df_pickup.loc[:, 'Guest Name'][i], '\n')
+                print('CURRENT BUS:', pickup_buses[current_bus], '\n')
+                print('KEY:', bus_assignments[pickup_buses[current_bus]], '\n')
                 
-                
-            else:              
-                i += 1
-                j += 1
-                assigned_to_bus = 0
-                print('end stop')
+                bus_assignments[pickup_buses[current_bus]].append(tour_df_pickup.loc[:, 'Guest Name'][i])
+                number_in_bus += tour_df_pickup.loc[:, 'Pax'][i]
+                print("number in bus:", number_in_bus)
+                print(bus_assignments)
+#                i += 1   
+
+            else:
+                if current_bus < total_bus_count:
+                    current_bus += 1
+                    number_in_bus = 0
+                    i += 1
+                else:
+                    print('all buses are full')
+                    return bus_assignments
     
     return bus_assignments
+
+print(assign_buses(bus_capacities, pickup_buses))
+
