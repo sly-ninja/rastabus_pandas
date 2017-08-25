@@ -56,7 +56,7 @@ def add_location_groups(tour_df_pickup):
     
     for city in cities:
         for i in range(len(tour_df_pickup)):
-            if tour_df_pickup[['Pickup Location']].loc[i].str.contains(city).bool():
+            if tour_df_pickup.loc[:, 'Pickup Location'][i].str.contains(city).bool():
                 tour_df_pickup.loc[:, 'Location Groups'][i] = city
                 location_groups_count[city] += tour_df_pickup.loc[:, ('Pax')][i]
     

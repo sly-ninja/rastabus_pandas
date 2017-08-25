@@ -56,5 +56,5 @@ def assign_buses(bus_capacities, pickup_buses):
     
     return bus_assignments
 
-print(assign_buses(bus_capacities, pickup_buses))
+#print(assign_buses(bus_capacities, pickup_buses))
 

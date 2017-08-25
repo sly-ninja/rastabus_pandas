@@ -46,7 +46,7 @@ class Rasta_Dataframe(object):
         pickup_column = self.tour_df.loc[0:, 'Pickup Location']
         # remove those who are going to meet at the visitor center
         to_drop = [ "*Check-in Santa Monica - You'll meet us in Santa Monica @1400 Ocean Ave, 90401 9-9:30 AM" ]
-        self.tour_df_pickup = self.tour_df[ ~pickup_column.isin(to_drop) ]
+        self.tour_df_pickup = self.tour_df.loc[~pickup_column.isin(to_drop)]
         
         return self.tour_df_pickup
         
